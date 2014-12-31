@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Fat Cake Club :: Cycling Club in San Francisco</title>
+    <link rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-3">
+          <a href="/">
+            <img src="/images/fat-cake.jpg" alt="Fat Cake Club" class="img-responsive">
+          </a>
+        </div>
+        <div class="col-xs-9 fc-nav">
+          <ul>
+            <li><a href="http://www.strava.com/clubs/FatCake">Strava Club</a></li>
+            <li><a href="http://instagram.com/fatcakeclub">Instagram</a></li>
+            {{! <li><a href="https://twitter.com/fatcakeclub">Twitter</a></li> }}
+          </ul>
+        </div>
+      </div>
+
+      <div class="row instagram">
+        <h4 class="col-xs-12">Loading #fatcakeclub Instagram photos</h4>
+      </div>
+
+
+    </div>
+    <footer>
+      <div class="container footer">
+        ©{{ year }}
+      </div>
+    </footer>
+    <script src="/components/jquery/dist/jquery.min.js"></script>
+    <script src="/javascripts/instagram.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', '{{ googleAnalytics.tracking }}', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>

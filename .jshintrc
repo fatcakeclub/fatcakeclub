@@ -1,0 +1,8 @@
+{
+  "curly": true,
+  "eqeqeq": true,
+  "node": true,
+  "quotmark": "single",
+  "unused": true,
+  "strict": true
+}

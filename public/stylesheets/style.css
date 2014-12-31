@@ -1,0 +1,46 @@
+html {
+  height: 100%;
+}
+
+body {
+  padding-top: 3em;
+  height: 100%;
+}
+
+.container {
+  min-height: 100%;
+  padding-bottom: 2em;
+  margin-bottom: -2em;
+}
+
+a {
+  color: #23dbbd;
+}
+
+.instagram h4 {
+  text-align: center;
+  color: #8c8c8c;
+  text-shadow: 2px 2px 2px rgba(200, 200, 200, 0.5);
+  margin-top: 3em;
+}
+
+footer {
+  color: #8c8c8c;
+  text-align: center;
+  font-size: 0.8em;
+  bottom: 0;
+}
+
+.fc-nav {
+  font-weight: bold;
+  font-size: 1.4em;
+  font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+.fc-nav ul {
+  margin-top: 1em;
+  list-style: none;
+}
+.fc-nav li {
+  float: right;
+  padding: 0 1em;
+}

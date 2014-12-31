@@ -1,0 +1,56 @@
+@import "compass/css3";
+
+$light-text: rgba(140, 140, 140, 1);
+$link-text: #23DBBD;
+$footer-height: 2em;
+
+html {
+  height: 100%;
+}
+
+body {
+  padding-top: 3em;
+  height: 100%;
+}
+
+.container {
+  min-height: 100%;
+  padding-bottom: $footer-height;
+  margin-bottom: -$footer-height;
+}
+
+a {
+  color: $link-text;
+}
+
+.instagram {
+  h4 {
+    text-align: center;
+    color: $light-text;
+    text-shadow: 2px 2px 2px rgba(200, 200, 200, 0.5);
+    margin-top: 3em;
+  }
+}
+
+footer {
+  color: $light-text;
+  text-align: center;
+  font-size: 0.8em;
+  bottom: 0;
+}
+
+.fc-nav {
+  font-weight: bold;
+  font-size: 1.4em;
+  font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+
+  ul {
+    margin-top: 1em;
+    list-style: none;
+  }
+
+  li {
+    float: right;
+    padding: 0 1em;
+  }
+}
