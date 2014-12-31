@@ -6,6 +6,11 @@ jQuery(function($) {
   $.get('/instagram', function(data) {
     var thumbnails = [];
 
+    if('error' === data.status) {
+      instagram.html('<div class="alert alert-danger" role="alert">Issue Loading Instagram Images</div>');
+      return;
+    }
+
     $.each(data.data, function(i, item) {
       thumbnails.push(
         $('<div class="col-xs-4 col-sm-3 col-md-2">')

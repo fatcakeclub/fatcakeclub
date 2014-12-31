@@ -31,7 +31,7 @@ function get(path, query, cb) {
     }
     else if(response.statusCode !== 200) {
       cb({
-        error: body
+        error: JSON.parse(body)
       });
     }
     else {
@@ -47,11 +47,12 @@ function post(path, data, cb) {
     form: data
   }, function(err, response, body){
     if(err) {
+      debug('err:', err);
       cb(err);
     }
     else if(response.statusCode !== 200) {
       cb({
-        error: body
+        error: JSON.parse(body)
       });
     }
     else {
@@ -62,7 +63,7 @@ function post(path, data, cb) {
 
 router.get('/access_token', function(req, res) {
 
-  var access_token_url = url.parse('https://api.instagram.com/oauth/authorize/'),
+  var access_token_url = url.parse(instagramBase + '/oauth/authorize/'),
     redirect_uri = url.format({
       protocol: req.protocol,
       host: req.get('host'),
@@ -105,10 +106,26 @@ router.get('/access_token', function(req, res) {
 
 /* GET instagram feed. */
 router.get('/', function(req, res) {
+  if(!instagramConfig.access_token || '' === instagramConfig.access_token) {
+    res.send({
+      'status': 'error',
+      'error': 'Please set the instagram.access_token in the config'
+    });
+    return;
+  }
+
   get('/v1/tags/fatcakeclub/media/recent', {
     count: 24
   }, function(err, body) {
-    res.send(body);
+    if(err) {
+      res.send({
+        status: 'error',
+        error: err
+      });
+    }
+    else {
+      res.send(body);
+    }
   });
 
   // res.send('instagram');

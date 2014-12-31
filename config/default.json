@@ -1,6 +1,8 @@
 {
   "instagram": {
-    "access_token": ""
+    "access_token": "",
+    "client_id": "",
+    "client_secret": ""
   },
   "googleAnalytics": {
     "tracking": "UA-58070695-1"
