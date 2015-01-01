@@ -17,15 +17,6 @@ module.exports = function(grunt) {
         'public/javascripts/**/*.js'
       ]
     },
-    compass: {
-      all: {
-        options: {
-          sourcemap: true,
-          sassDir: 'public/stylesheets',
-          cssDir: 'public/stylesheets'
-        }
-      }
-    },
     jsonlint: {
       configs: {
         src: [
@@ -33,6 +24,31 @@ module.exports = function(grunt) {
           'package.json',
           'config/**/*.json'
         ]
+      }
+    },
+    lintspaces: {
+      src: [
+        'bin/www',
+        'app.js',
+        'public/javascripts/**/*.js',
+        'public/stylesheets/**/*.scss',
+        'routes/**/*.js',
+        'views/**/*.hjs',
+      ],
+      options: {
+        newlineMaximum: 2,
+        trailingspaces: true,
+        indentation: 'spaces',
+        spaces: 2
+      }
+    },
+    compass: {
+      all: {
+        options: {
+          sourcemap: true,
+          sassDir: 'public/stylesheets',
+          cssDir: 'public/stylesheets'
+        }
       }
     },
     clean: {
@@ -72,6 +88,7 @@ module.exports = function(grunt) {
   grunt.registerTask('default', [
     'jshint',
     'jsonlint',
+    'lintspaces',
     'compass'
   ]);
 
