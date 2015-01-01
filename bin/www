@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+'use strict';
+
 var debug = require('debug')('fatcakeclub');
 var app = require('../app');
 

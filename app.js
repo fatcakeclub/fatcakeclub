@@ -21,7 +21,6 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(require('node-compass')({mode: 'expanded'}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
@@ -45,6 +44,7 @@ if (app.get('env') === 'development') {
             message: err.message,
             error: err
         });
+        next();
     });
 }
 
@@ -56,6 +56,7 @@ app.use(function(err, req, res, next) {
         message: err.message,
         error: {}
     });
+    next();
 });
 
 
