@@ -1,0 +1,13 @@
+{
+  "curly": true,
+  "eqeqeq": true,
+  "node": true,
+  "quotmark": "single",
+  "unused": true,
+  "strict": true,
+  "globals": {
+    "describe": true,
+    "it": true,
+    "expect": true
+  }
+}
