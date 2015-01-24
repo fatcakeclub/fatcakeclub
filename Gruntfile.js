@@ -42,6 +42,12 @@ module.exports = function(grunt) {
         spaces: 2
       }
     },
+    exec: {
+      servertest: {
+        command: './node_modules/jasmine-node/bin/jasmine-node test/server/ --captureExceptions',
+        stdout: true
+      },
+    },
     compass: {
       all: {
         options: {
@@ -85,10 +91,15 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('default', [
+  grunt.registerTask('test', [
     'jshint',
     'jsonlint',
     'lintspaces',
+    'exec:servertest',
+  ]);
+
+  grunt.registerTask('default', [
+    'test',
     'compass'
   ]);
 
