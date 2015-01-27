@@ -31,7 +31,7 @@ function get(path, query, cb) {
     }
     else if(response.statusCode !== 200) {
       cb({
-        error: JSON.parse(body)
+        error: 'non 200 response'
       });
     }
     else {
