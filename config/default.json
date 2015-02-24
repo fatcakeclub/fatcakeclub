@@ -6,5 +6,12 @@
   },
   "googleAnalytics": {
     "tracking": "UA-58070695-1"
+  },
+  "cors": {
+    "allowedOrigins": [
+      "https://fat-cake.squarespace.com",
+      "http://www.fatcake.cc",
+      "https://www.fatcake.cc"
+    ]
   }
 }

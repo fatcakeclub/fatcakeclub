@@ -2,7 +2,9 @@
 
 var express = require('express'),
   debug = require('debug')('fatcakeclub:instagram'),
-  instagramConfig = require('config').get('instagram'),
+  config = require('config'),
+  instagramConfig = config.get('instagram'),
+  corsConfig = config.get('cors'),
   instagramBase = 'https://api.instagram.com/',
   // crypto = require('crypto'),
   url = require('url'),
@@ -106,12 +108,18 @@ router.get('/access_token', function(req, res) {
 
 /* GET instagram feed. */
 router.get('/', function(req, res) {
+  var origin = req.header('Origin');
+
   if(!instagramConfig.access_token || '' === instagramConfig.access_token) {
     res.send({
       'status': 'error',
       'error': 'Please set the instagram.access_token in the config'
     });
     return;
+  }
+
+  if(origin && _.contains(corsConfig.allowedOrigins, origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
   }
 
   get('/v1/tags/fatcakeclub/media/recent', {
