@@ -6,7 +6,6 @@ var express = require('express'),
   instagramConfig = config.get('instagram'),
   corsConfig = config.get('cors'),
   instagramBase = 'https://api.instagram.com/',
-  // crypto = require('crypto'),
   url = require('url'),
   router = express.Router(),
   _ = require('underscore'),
@@ -111,7 +110,7 @@ router.get('/', function(req, res) {
   var origin = req.header('Origin');
 
   if(!instagramConfig.access_token || '' === instagramConfig.access_token) {
-    res.send({
+    res.jsonp({
       'status': 'error',
       'error': 'Please set the instagram.access_token in the config'
     });
@@ -126,17 +125,15 @@ router.get('/', function(req, res) {
     count: 24
   }, function(err, body) {
     if(err) {
-      res.send({
+      res.jsonp({
         status: 'error',
         error: err
       });
     }
     else {
-      res.send(body);
+      res.jsonp(body);
     }
   });
-
-  // res.send('instagram');
 });
 
 module.exports = router;

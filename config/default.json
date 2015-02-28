@@ -7,6 +7,9 @@
   "googleAnalytics": {
     "tracking": "UA-58070695-1"
   },
+  "announcements": {
+    "url": "https://www.strava.com/clubs/FatCake/announcements"
+  },
   "cors": {
     "allowedOrigins": [
       "https://fat-cake.squarespace.com",

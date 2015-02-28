@@ -3,3 +3,5 @@ public/components
 config/production.json
 public/stylesheets/style.css*
 .sass-cache
+
+.DS_Store
