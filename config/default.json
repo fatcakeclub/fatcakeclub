@@ -4,6 +4,12 @@
     "client_id": "",
     "client_secret": ""
   },
+  "strava": {
+    "client_id": "",
+    "client_secret": "",
+    "access_token": "",
+    "club_id": ""
+  },
   "googleAnalytics": {
     "tracking": "UA-58070695-1"
   },

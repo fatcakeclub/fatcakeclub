@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var instagram = require('./routes/instagram');
+var strava = require('./routes/strava');
 var announcements = require('./routes/announcements');
 
 var app = express();
@@ -26,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/instagram', instagram);
+app.use('/strava', strava);
 app.use('/announcements', announcements);
 
 // catch 404 and forward to error handler

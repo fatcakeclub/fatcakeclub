@@ -1,18 +1,19 @@
 'use strict';
 
 var express = require('express'),
-  debug = require('debug')('fatcakeclub:instagram'),
+  debug = require('debug')('fatcakeclub:strava'),
   config = require('config'),
-  instagramConfig = config.get('instagram'),
+  stravaConfig = config.get('strava'),
   corsConfig = config.get('cors'),
-  instagramBase = 'https://api.instagram.com',
+  stravaBase = 'https://www.strava.com',
+  stravaUrl = 'https://www.strava.com',
   url = require('url'),
   router = express.Router(),
   _ = require('underscore'),
   request = require('request');
 
 function get(path, query, cb) {
-  var iurl = url.parse(instagramBase + path);
+  var iurl = url.parse(stravaBase + path);
 
   if(!cb) {
     cb = query;
@@ -22,27 +23,31 @@ function get(path, query, cb) {
   if(!iurl.query) {
     iurl.query = {};
   }
+
   _.extend(iurl.query, query);
-  iurl.query.access_token = instagramConfig.access_token;
   iurl = url.format(iurl);
-  debug('iurl:', iurl);
-  request(url.format(iurl), function(err, response, body) {
-    if(err) {
-      cb(err);
-    }
-    else if(response.statusCode !== 200) {
-      cb({
-        error: 'non 200 response'
-      });
-    }
-    else {
-      cb(undefined, JSON.parse(body));
-    }
+  request({
+    url: url.format(iurl),
+    headers: {
+      Authorization: 'Bearer ' + stravaConfig.access_token
+    }}, function(err, response, body) {
+      if(err) {
+        cb(err);
+      }
+      else if(response.statusCode !== 200) {
+        cb({
+          error: 'non 200 response',
+          body: body
+        });
+      }
+      else {
+        cb(undefined, JSON.parse(body));
+      }
   });
 }
 
 function post(path, data, cb) {
-  var iurl = url.parse(instagramBase + path);
+  var iurl = url.parse(stravaUrl + path);
   request.post({
     url:url.format(iurl),
     form: data
@@ -64,35 +69,33 @@ function post(path, data, cb) {
 
 router.get('/access_token', function(req, res) {
 
-  var access_token_url = url.parse(instagramBase + '/oauth/authorize/'),
+  var access_token_url = url.parse(stravaUrl + '/oauth/authorize/'),
     redirect_uri = url.format({
       protocol: req.protocol,
       host: req.get('host'),
-      pathname: '/instagram/access_token'
+      pathname: '/strava/access_token'
     });
 
   if(req.query.error) {
     res
       .status(401)
-      .render('instagram/access_token_error', {
+      .render('strava/access_token_error', {
         error_reason: req.query.error_reason,
         error_description: req.query.error_description
     });
     return;
   }
   if(req.query.code) {
-    post('/oauth/access_token', {
-      client_id: instagramConfig.client_id,
-      client_secret: instagramConfig.client_secret,
-      grant_type: 'authorization_code',
-      redirect_uri: redirect_uri,
+    post('/oauth/token', {
+      client_id: stravaConfig.client_id,
+      client_secret: stravaConfig.client_secret,
       code: req.query.code
     }, function(err, body) {
       if(err) {
         res.send(err.error);
         return;
       }
-      res.render('instagram/access_token', {
+      res.render('strava/access_token', {
         access_token: body.access_token
       });
     });
@@ -100,12 +103,12 @@ router.get('/access_token', function(req, res) {
   }
 
 
-  if(!instagramConfig.client_id) {
-    res.send('no instagram.client_id set in config');
+  if(!stravaConfig.client_id) {
+    res.send('no strava.client_id set in config');
     return;
   }
   access_token_url.query = {
-    client_id: instagramConfig.client_id,
+    client_id: stravaConfig.client_id,
     redirect_uri: redirect_uri,
     response_type: 'code'
   };
@@ -113,14 +116,21 @@ router.get('/access_token', function(req, res) {
   res.redirect(url.format(access_token_url));
 });
 
-/* GET instagram feed. */
-router.get('/', function(req, res) {
+router.get('/announcements', function(req, res) {
   var origin = req.header('Origin');
 
-  if(!instagramConfig.access_token || '' === instagramConfig.access_token) {
+  if(!stravaConfig.access_token || '' === stravaConfig.access_token) {
     res.jsonp({
       'status': 'error',
-      'error': 'Please set the instagram.access_token in the config'
+      'error': 'Please set the strava.access_token in the config'
+    });
+    return;
+  }
+
+  if(!stravaConfig.club_id || '' === stravaConfig.club_id) {
+    res.jsonp({
+      'status': 'error',
+      'error': 'Please set the strava.club_id in the config'
     });
     return;
   }
@@ -128,19 +138,14 @@ router.get('/', function(req, res) {
   if(origin && _.contains(corsConfig.allowedOrigins, origin)) {
     res.header('Access-Control-Allow-Origin', origin);
   }
-
-  get('/v1/tags/fatcakeclub/media/recent', {
-    count: 24
-  }, function(err, body) {
+  get('/api/v3/clubs/'+ stravaConfig.club_id +'/announcements', function(err, announcements) {
     if(err) {
-      res.jsonp({
-        status: 'error',
-        error: err
-      });
+      debug('announcements error', err);
+      res.jsonp('error');
+      return;
     }
-    else {
-      res.jsonp(body);
-    }
+    announcements.length = 3;
+    res.jsonp(announcements);
   });
 });
 
