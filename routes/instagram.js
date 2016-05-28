@@ -9,7 +9,17 @@ var express = require('express'),
   url = require('url'),
   router = express.Router(),
   _ = require('underscore'),
-  request = require('request');
+  request = require('request'),
+
+  bannedPhrases = [
+    /boob/i
+  ];
+
+function hasBannedPhrase(text) {
+  return _.find(bannedPhrases, function(bannedPhrase) {
+    return bannedPhrase.test(text);
+  });
+}
 
 function get(path, query, cb) {
   var iurl = url.parse(instagramBase + path);
@@ -139,6 +149,12 @@ router.get('/', function(req, res) {
       });
     }
     else {
+      if(body.data) {
+        // attempt to remove unwanted content
+        body.data = _.filter(body.data, function(image) {
+          return !hasBannedPhrase(image.caption.text);
+        });
+      }
       res.jsonp(body);
     }
   });
